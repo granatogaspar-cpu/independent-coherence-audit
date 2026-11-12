@@ -1,34 +1,61 @@
-# Evaluation protocol — not yet executed
+# ICA evaluation protocol — experimental; no performance result claimed
 
-## Research question
-Does ICA improve detection of real reasoning errors in long-running AI projects compared with ordinary self-review and fresh-chat review?
+## Objective
 
-## Conditions
-A. Same-conversation self-review.
-B. Fresh-conversation review with the original decision record.
-C. ICA blind reconstruction followed by decision-record audit.
+Determine whether a complete project dossier and an independent fresh-session audit detect more **real** project coherence defects than ordinary AI self-review at reasonable cost. A secondary question is whether blind reconstruction adds value beyond the user's original one-file method.
 
-Use identical cases, comparable evidence, equivalent evaluation budgets where feasible, and multiple runs/models. Randomize condition order and prevent benchmark answer leakage.
+## Compare four conditions
 
-## Dataset
-Start with at least 30 cases, including:
-- Known contradictions and incorrect factual claims.
-- User-induced anchoring and overlooked viable alternatives.
-- Unsupported certainty and objective drift.
-- Correct plans with no planted defects (negative controls).
-- Ambiguous cases where the right answer is uncertainty.
+A. Same original conversation: ordinary request to review previous work.
 
-Separate dataset creation from adjudication. Preserve independent ground-truth notes and original evidence. Do not treat AI-generated labels alone as verified truth.
+B. Ordinary fresh chat: original assistant's short summary + "check coherence."
+
+C. **ICA FULL**: full source-traceable handoff, then fresh-session audit.
+
+D. **ICA BLIND**: blind reconstruction frozen before the decision/evidence packet, then audit.
+
+To separate **dossier completeness** from **review protocol**, run at least one comparison in which B and C receive equal source material but different review instructions; otherwise superiority could simply reflect access to more evidence.
+
+## Controlled cases
+
+Begin with 30 mixed cases and expand only as resources allow:
+- Actual user requirements conflicting with later AI design decisions.
+- Source artifacts contradicting assistant claims.
+- "Implemented" statements without working code or tests.
+- Explicit allowed/rejected mockup versions.
+- Hidden missing artifact versus truly absent implementation.
+- User suggestion introducing a misleading anchor.
+- Plans with wrong dependencies or ignored constraints.
+- **Negative controls:** correct coherent projects where criticism would be a false positive.
+- Inconclusive cases where neither model can verify truth.
+
+Use actual consented or properly anonymized projects where possible; otherwise label synthetic data. The benchmark generator must not be the sole authority on its own expected answer. Preserve evidence and an independent adjudication log.
+
+## Experimental rigor
+
+1. Fix objectives, source records, and expected findings **before** running reviewers.
+2. For each case, randomize conditions, use independent sessions, and log model/settings.
+3. Control tools, evidence access, context/window limits, and computation budget; separately test real-world convenience.
+4. Repeat sufficiently to estimate run-to-run variability.
+5. Blind graders to the method when possible; reconcile adjudicator disagreements against sources.
+6. Grade each specific finding as true, false, or undecidable; do not award points for generic suspicion.
+7. Record failures to generate files, source omissions, or context contamination as first-class outcomes.
 
 ## Metrics
-- True positives, false positives, false negatives.
-- Precision, recall, and false-positive rate.
-- Severity-weighted detection where justified.
-- Time, tokens, and dollar cost.
-- Agreement between independent human or evidence-based adjudicators.
-- Variability across models and repeated trials.
 
-Publish raw cases where privacy and rights allow, prompts, scoring rules, limitations, and unfavorable results. Do not invent test outcomes.
+- Precision: fraction of flagged issues that are real.
+- Recall: fraction of seeded/verified issues found.
+- False-positive rate on known-correct decisions and cases.
+- Missed critical defects, severity and repairability.
+- Coverage: proportion of known required sources accounted for, with missing-file rate.
+- Audit usefulness: percentage of findings with exact evidence pointers and feasible correction.
+- Cost: tokens, money, wall time, human actions/approvals.
+- Variation across models, projects, and runs.
 
-## Decision gate
-Only claim superiority if independently adjudicated results support it. If ICA underperforms, document that and improve or simplify the protocol.
+## Publication and claims
+
+Publish method, cases if legally shareable, expected results, model/settings, adjudication, and actual outputs (redacted where necessary). Report non-significant, neutral, and unfavorable outcomes. Do not claim ICA is proven more truthful, "forces honesty," or outperforms other methods without independently supported results. Do not fabricate adoption or benchmark numbers.
+
+## Decision rule
+
+If C shows no meaningful improvement over A/B, investigate whether transfer completeness, not protocol, is the bottleneck. If D fails to improve C, keep FULL as the lightweight default. If false positives rise materially, reduce aggressive criticism. Prefer the simplest method supported by data.
